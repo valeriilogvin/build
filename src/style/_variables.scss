@@ -3,15 +3,23 @@
   @return ($object / $vh) * 1vh;
 }
 
-$makro-extra-bold: 'Makro ExtraBold', sans-serif;
-$makro-light: 'Makro Light', sans-serif;
-$circe-bold: 'Circe Bold', sans-serif;
-$circe-extra: 'Circe ExtraBold', sans-serif;
+$gilroy-medium: 'Gilroy Medium', sans-serif;
+$gilroy-regular: 'Gilroy Regular', sans-serif;
+$gilroy-semi-bold: 'Gilroy SemiBold', sans-serif;
 $circe-light: 'Circe Light', sans-serif;
-$circe-extra-light: 'Circe ExtraLight';
 $circe-regular: 'Circe Regular', sans-serif;
+$circe-bold: 'Circe Bold', sans-serif;
+//$makro-extra-bold: 'Makro ExtraBold', sans-serif;
+//$makro-light: 'Makro Light', sans-serif;
+//$circe-bold: 'Circe Bold', sans-serif;
+//$circe-extra: 'Circe ExtraBold', sans-serif;
+//$circe-light: 'Circe Light', sans-serif;
+//$circe-extra-light: 'Circe ExtraLight';
 
 $color-text-black: #25272E;
+$button-background-color-40: rgba(217, 21, 21, 0.4);
+$grey-background-color: rgba(28, 28, 30, 0.7);
+$button-border-radius: get-vh(10px);
 $color-text-red : #DD4E4E;
 $color-background-red : #D91515;
 

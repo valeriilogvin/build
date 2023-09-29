@@ -6,152 +6,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.theme.min.css">
 
 </head>
-    <body>
-    <img class="logo" src="img/logo.svg" alt="">
-    <a href="#" class="close"><span>Закрыть</span></a>
-    <div id="my-items" class="wrapper">
-            <div class="main-container">
+<body style="background: url('img/bg.jpg') top center no-repeat; background-size: cover">
 
-                <!-- block with items -->
-                <div class="items-block">
-                    <h1>Мои предметы</h1>
-                    <span class="amount-of-space"><span class="total"></span> из 10 кг</span>
-                    <div class="line-filling">
-                        <div class="filling-percentage" style="width: 30%;"></div>
-                    </div>
-                    <div class="items-container js-items-container">
-                        <!-- here must to be items -->
-                    </div>
-                    <p class="help">Чтобы <span class="red">разделить</span> используйте <span class="red">CTRL + ЛКМ</span> и перетащите предмет.</p>
-                    <p class="js-modal-2-button hidden help md-trigger" data-modal="modal-2"></p>
-                </div>
-                <!-- block with items : END -->
+    <div class="hud">
 
-                <!-- block with usable items -->
-                <div class="used-items js-used-items">
-                    <div data-slot="30" data-outfit-type="1" class="item-block js-item-block head"></div>
-                    <div data-slot="31" data-outfit-type="2" class="item-block js-item-block glasses"></div>
-                    <div data-slot="32" data-outfit-type="3" class="item-block js-item-block mask"></div>
-                    <div data-slot="33" data-outfit-type="4" class="item-block js-item-block earrings"></div>
-                    <div data-slot="34" data-outfit-type="5" class="item-block js-item-block neck"></div>
-                    <div data-slot="35" data-outfit-type="6" class="item-block js-item-block outerwear"></div>
-                    <div data-slot="36" data-outfit-type="7" class="item-block js-item-block shirt"></div>
-                    <div data-slot="37" data-outfit-type="8" class="item-block js-item-block vest"></div>
-                    <div data-slot="38" data-outfit-type="9" class="item-block js-item-block wrist"></div>
-                    <div data-slot="39" data-outfit-type="10" class="item-block js-item-block watches"></div>
-                    <div data-slot="40" data-outfit-type="11" class="item-block js-item-block legs"></div>
-                    <div data-slot="41" data-outfit-type="12" class="item-block js-item-block gloves"></div>
-                    <div data-slot="42" data-outfit-type="13" class="item-block js-item-block shoes"></div>
-                </div>
-                <!-- block with usable items : END -->
+        <section class="hud-help hud-help-player">
+            <div class="hot-key"><p class="key">T</p>Чат</div>
+            <div class="hot-key"><p class="key">B</p>Микрофон</div>
+            <div class="hot-key"><p class="key">F5</p>Перезагрузить микрофон</div>
+            <div class="hot-key"><p class="key">M</p>Меню</div>
+            <div class="hot-key"><p class="key">I</p>Инвентарь</div>
+            <div class="hot-key"><p class="key">↑</p>Телефон</div>
+            <div class="hot-key"><p class="key">U</p>Анимации</div>
+            <div class="hot-key"><p class="key">F2</p>Курсор</div>
+            <div class="hot-key"><p class="key">F10</p>Помощь</div>
+            <div class="hot-key"><p class="key">F6</p>Скрыть подсказки</div>
+        </section>
+        <section class="hud-help hud-help-vehicle">
+            <div class="hot-key"><p class="key">T</p>Чат</div>
+            <div class="hot-key"><p class="key">B</p>Микрофон</div>
+            <div class="hot-key"><p class="key">↑</p>Телефон</div>
+            <div class="hot-key"><p class="key">L</p>Открыть / Закрыть</div>
+            <div class="hot-key"><p class="key">2</p>Завести двигатель</div>
+            <div class="hot-key"><p class="key">J</p>Пристегнуться</div>
+            <div class="hot-key"><p class="key">←</p><p class="key">→</p>Поворотники</div>
+            <div class="hot-key"><p class="key">↓</p>Аварийка</div>
+            <div class="hot-key"><p class="key">K</p>Круиз-контроль</div>
+            <div class="hot-key"><p class="key">X</p>Автопилот</div>
+            <div class="hot-key"><p class="key">F6</p>Скрыть подсказки</div>
+        </section>
 
-                <!-- block with statuses -->
-                <div class="status">
-                    <div id="satiety" class="item">
-                        <div class="text-block">
-                            <span class="percent"><span class="value"></span>%</span>
-                            <span class="text">СЫТОСТЬ</span>
-                        </div>
-                        <div class="circle-front"></div>
-                    </div>
-                    <div id="thirst" class="item">
-                        <div class="text-block">
-                            <span class="percent"><span class="value"></span>%</span>
-                            <span class="text">ЖАЖДА</span>
-                        </div>
-                        <div class="circle-front"></div>
-                    </div>
-                    <div id="mood" class="item">
-                        <div class="text-block">
-                            <span class="percent"><span class="value"></span>%</span>
-                            <span class="text">НАСТРОЕНИЕ</span>
-                        </div>
-                        <div class="circle-front"></div>
-                    </div>
-                    <div id="drug-addict" class="item">
-                        <div class="text-block">
-                            <span class="percent"><span class="value"></span>%</span>
-                            <span class="text">НАРКОЗАВИСИМОСТЬ</span>
-                        </div>
-                        <div class="circle-front"></div>
-                    </div>
-                </div>
-                <!-- block with statuses : END -->
-
+        <section class="online">
+            <div class="logo"><img src="img/logo.svg" alt=""></div>
+            <div class="online">
+                <span class="text">Online:</span>
+                <span class="online-amount">1600</span>
             </div>
-            <div id="quick-use">
-                <h2>Быстрый доступ</h2>
-                <div class="flex">
-                    <div data-slot="26" class="item-block js-item-block"></div>
-                    <div data-slot="27" class="item-block js-item-block"></div>
-                    <div data-slot="28" class="item-block js-item-block"></div>
-                    <div data-slot="29" class="item-block js-item-block"></div>
-                </div>
+            <div class="player-id-block">
+                <span class="text">(ID: <span class="player-id">327</span>)</span>
             </div>
+        </section>
 
+        <section class="pistol-ammo" style="display: none">30</section>
 
-        </div>
+        <section class="map"></section>
 
-    <!-- pop-up-blocks -->
-    <div class="md-modal md-effect-1 js-modal-1" id="modal-1">
-        <div class="md-content">
-            <div class="md-content">
-                <h1>Выбросить предмет</h1>
-                <div class="content">
-                    <p>Вы хотите выбросить <span class="red js-modal-item-name"></span> (х<span class="value js-value"></span>)</p>
-                    <span class="quantity">Выберите количество:</span>
-                    <div class="range-block">
-                        <div>
-                            <input id="myRange" type="range" min="0" max="2" value="1" class="slider" >
-                            <p id="input-value"></p>
-                        </div>
-                        <button class="max js-button-max">max</button>
+        <section class="chat">
+            <form action="">
+                <div class="rp">
+                    <span class="inputText">Сказать:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+                <div class="me">
+                    <span class="inputText">/me:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+                <div class="do">
+                    <span class="inputText">/do:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+                <div class="reaction">
+                    <span class="inputText">Рация:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+                <div class="department">
+                    <span class="inputText">Департамент:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+                <div class="nonRP">
+                    <span class="inputText">Non RP:</span>
+                    <input type="text">
+                    <button type="submit"><img src="img/button-send.svg" alt=""></button>
+                </div>
+            </form>
+            <div class="flex chat-buttons">
+                <a data-show="rp" class="button show">RP</a>
+                <a data-show="me" class="button">/me</a>
+                <a data-show="do" class="button">/do</a>
+                <a data-show="reaction" class="button">Рация</a>
+                <a data-show="department" class="button">Департамент</a>
+                <a data-show="nonRP" class="button">Non RP</a>
+            </div>
+        </section>
+
+        <section class="location">
+            <img src="img/location.svg" class="icon">
+            <p class="region"></p>
+            <p class="street"></p>
+        </section>
+
+        <section class="hud-voice hud-voice-player flex">
+            <div class="micro-block flex wrap">
+                <div class="date">01.06</div>
+                <div class="time">18:43</div>
+                <div class="money">$2 000 000</div>
+                <div class="micro-img"></div>
+            </div>
+        </section>
+
+        <section class="hud-voice hud-voice-vehicle flex">
+            <div class="vehicle-block">
+                <div class="speedometer">
+                    <div class="icon">
+                        <div class="arrow"></div>
                     </div>
-                    <div class="bottoms">
-                        <button class="bottom drop">Выбросить</button>
-                        <button class="bottom md-close">Отмена</button>
+                    <div class="speed">85</div>
+                </div>
+                <div class="right-column">
+                    <div class="fuel">82L</div>
+                    <div class="icons">
+                        <div class="turn-signal turn-signal-left" ><svg class="icon icon-arrow-left"><use xlink:href="#icon-arrow-left"></use></svg></div>
+                        <div class="turn-signal turn-signal-right"><svg class="icon icon-arrow-right"><use xlink:href="#icon-arrow-right"></use></svg></div>
+                        <div class="blocked"><svg class="icon icon-lock"><use xlink:href="#icon-lock"></use></svg></div>
                     </div>
                 </div>
+                <div class="engine-icon"></div>
             </div>
-        </div>
+            <div class="micro-block flex wrap">
+                <div class="date"></div>
+                <div class="time"></div>
+                <div class="money">$2 000 000</div>
+                <div class="micro-img"></div>
+            </div>
+        </section>
+
     </div>
-    <div class="md-modal md-effect-1 js-modal-2" id="modal-2" data-slot-id="" data-drop-slot-id="" >
-        <div class="md-content">
-            <div class="md-content">
-                <h1>Разделить предмет</h1>
-                <div class="content">
-                    <div class="input-group">
-                        <span>Выберите количество (1-2):</span>
-                        <label for="input-divide"><input type="text" max="2" value="1" id="input-divide" ></label>
-                    </div>
-                    <div class="buttons-group">
-                        <button class="js-modal-2-min">min</button>
-                        <button class="js-modal-2-half">50%</button>
-                        <button class="js-modal-2-max">max</button>
-                    </div>
-                    <div class="bottoms">
-                        <button class="bottom drop js-split">Разделить</button>
-                        <button class="bottom md-close">Отмена</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="md-overlay"></div>
-    <!-- pop-up-blocks : END -->
 
+    <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+            <symbol id="icon-arrow-left" viewBox="0 0 49 32">
+                <path d="M31.98 7.954h14.782c1.261 0 1.602 0.447 1.602 2.114 0 3.935 0 7.87 0 11.804 0 1.801-0.338 2.25-1.715 2.25-9.785 0-19.571 0-29.357 0-1.060 0-1.062 0-1.062 1.392 0 1.557 0 3.113 0 4.672 0 0.688-0.080 1.327-0.591 1.66s-0.982 0.085-1.414-0.37c-4.492-4.677-8.985-9.349-13.48-14.017-0.994-1.035-0.999-1.852 0.015-2.909 3.446-3.593 6.896-7.178 10.351-10.756 1.078-1.118 2.161-2.23 3.238-3.35 0.357-0.37 0.731-0.602 1.183-0.316 0.477 0.301 0.686 0.826 0.688 1.507 0 1.756 0.030 3.511-0.008 5.268-0.018 0.811 0.179 1.072 0.801 1.069 4.989-0.031 9.98-0.019 14.967-0.019zM14.027 27.656c0-1.509 0-2.779 0-4.048 0-1.988 0.305-2.379 1.806-2.379h29.284c1.039 0 1.040 0 1.040-1.332 0-2.606 0-5.212 0-7.817 0-1.312 0-1.314-0.982-1.314h-29.605c-1.18 0-1.523-0.442-1.543-2.014-0.012-1.161 0-2.321-0.008-3.482 0-0.209 0.081-0.498-0.129-0.6-0.152-0.075-0.271 0.126-0.386 0.245-3.399 3.522-6.8 7.049-10.202 10.579-0.396 0.41-0.397 0.651 0.014 1.071 2.136 2.179 4.248 4.396 6.369 6.599 1.395 1.446 2.791 2.889 4.341 4.493z"></path>
+            </symbol>
+            <symbol id="icon-arrow-right" viewBox="0 0 49 32">
+                <path d="M17.474 24.046h-14.782c-1.261 0-1.602-0.447-1.602-2.114 0-3.935 0-7.87 0-11.804 0-1.801 0.338-2.25 1.715-2.25 9.785 0 19.571 0 29.357 0 1.060 0 1.062 0 1.062-1.392 0-1.557 0-3.113 0-4.672 0-0.688 0.079-1.327 0.591-1.66s0.982-0.085 1.414 0.37c4.492 4.677 8.985 9.349 13.48 14.017 0.994 1.035 0.999 1.852-0.015 2.909-3.446 3.593-6.896 7.178-10.351 10.756-1.078 1.118-2.161 2.23-3.238 3.35-0.358 0.371-0.731 0.602-1.183 0.316-0.477-0.301-0.687-0.826-0.688-1.508 0-1.756-0.030-3.511 0.008-5.268 0.018-0.811-0.179-1.072-0.801-1.069-4.989 0.031-9.98 0.019-14.967 0.019zM35.428 4.344c0 1.509 0 2.779 0 4.048 0 1.988-0.305 2.379-1.806 2.379h-29.284c-1.039 0-1.040 0-1.040 1.332 0 2.606 0 5.212 0 7.818 0 1.312 0 1.314 0.982 1.314h29.605c1.18 0 1.523 0.442 1.542 2.014 0.012 1.161 0 2.321 0.008 3.482 0 0.209-0.081 0.498 0.129 0.6 0.152 0.075 0.271-0.126 0.386-0.245 3.399-3.522 6.8-7.049 10.202-10.579 0.396-0.41 0.397-0.651-0.014-1.071-2.136-2.179-4.248-4.396-6.369-6.599-1.395-1.446-2.79-2.889-4.341-4.493z"></path>
+            </symbol>
+            <symbol id="icon-lock" viewBox="0 0 23 32">
+                <path d="M22.587 17.779c0-0.547-0.035-1.095-0.049-1.642-0.037-1.461-1.167-2.581-2.644-2.581h-0.49v-0.461c0-1.642 0.013-3.285-0.008-4.927-0.004-0.469-0.042-0.937-0.113-1.401h-0.012c-0.55-3.781-3.845-6.627-7.781-6.762-3.867-0.136-7.404 2.669-8.137 6.468-0.102 0.551-0.154 1.109-0.157 1.669-0.020 1.642-0.007 3.285-0.007 4.927v0.486c-0.219 0-0.409 0-0.6 0-1.426 0.034-2.554 1.122-2.561 2.539-0.024 4.416-0.033 8.833-0.028 13.249 0 1.51 1.112 2.6 2.634 2.649 0.655 0.020 1.31 0.004 1.965 0.004h15.098c1.798 0 2.889-1.086 2.89-2.875 0.001-3.78 0.001-7.56 0-11.34zM12.52 22.848c0.177 1.383 0.336 2.767 0.494 4.152 0.054 0.48-0.104 0.649-0.582 0.655-0.367 0.004-0.733 0-1.1 0s-0.733 0-1.1 0c-0.583 0-0.722-0.156-0.654-0.735 0.157-1.358 0.314-2.718 0.489-4.074 0.036-0.281-0.032-0.455-0.256-0.633-1.147-0.913-1.276-2.521-0.299-3.558 0.228-0.244 0.504-0.439 0.811-0.572s0.638-0.202 0.973-0.202c0.335 0 0.666 0.069 0.973 0.202s0.583 0.328 0.811 0.572c0.971 1.042 0.841 2.651-0.306 3.56-0.225 0.178-0.291 0.353-0.255 0.633zM7.67 13.553h-0.531v-0.439c0-1.656 0-3.311 0-4.966 0.006-2.354 1.842-4.212 4.154-4.211 0.871-0.003 1.72 0.269 2.426 0.777s1.231 1.226 1.5 2.050c0.018 0.052 0.035 0.106 0.051 0.156 0.112 0.399 0.165 0.813 0.157 1.227-0.004 0.157 0.005 0.314 0.025 0.469 0 0.809 0 1.617 0 2.424-0.007 0.078-0.007 0.157 0 0.235 0 0.621 0 1.241 0 1.861v0.413c-2.594 0.001-5.187 0.002-7.782 0.003z"></path>
+            </symbol>
+        </defs>
+    </svg>
 
-    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-
-    <!-- md-modal -->
-    <script src="js/classie.js"></script>
-    <script src="js/modalEffects.js"></script>
-    <!-- md-modal -->
-
-    <script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    </body>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
 </html>
