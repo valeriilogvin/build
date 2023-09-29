@@ -1,477 +1,838 @@
-/*
-* variables
-*/
-let char = {
-    name                : document.querySelector('.js_create_name'),
-    firstName           : document.querySelector('.js_first_name'),
-    lastName            : document.querySelector('.js_last_name'),
-    age                 : document.querySelector('.js_age'),
-    male                : document.querySelector('.js_male'),
-    female              : document.querySelector('.js_female'),
-    errors              : document.querySelector('.js_errors'),
-    back                : document.querySelector('.js_back'),
-    inputtedData        : document.querySelector('.js_inputted_data'),
-    settingBlock        : document.querySelector('.js_setting_block'),
-    inputtedFirstName   : document.querySelector('.js_data_first_name'),
-    inputtedLastName    : document.querySelector('.js_data_last_name'),
-    inputtedAge         : document.querySelector('.js_data_age'),
-    inputtedGender      : document.querySelector('.js_data_gender'),
+let defaultInventory = "#my-items",
+    warehouseInventory = "#warehouse",
+    vehicleInventory = "#vehicle",
+    itemsContainer          = $('.js-items-container'),
+    warehouseItemsContainer = $('.js-warehouse-items-container'),
+    $usedItemsBlock = $(".js-used-items"),
+    $modalSplit = $('.js-modal-2'),
+    singleWeightTemporary = 0.2; // <=== weightOfItems();
 
-    tabs                : document.querySelectorAll('.js_tab'),
-    tabsContainers      : document.querySelectorAll('.js_tab_container'),
+//  getSlotData()
+let getSlotID = getSlotData('data-slot-id'),
+    getOutfitType = getSlotData('data-item-type'),
+    getItemID = getSlotData('data-id'),
+    getDropBlockID = getSlotData('data-slot');
 
-    btnCreate           : document.querySelector('.js_create_char'),
 
-    validFirstName      : false,
-    validLastName       : false,
-    validAge            : false,
-    playerGender        : 0, // 0 - female; 1 - male
-};
+// JSON
+var myItems = '[{"SlotID":25, "OutfitType":13, "ItemID":285434435,"ItemName":"Shoes","CustomName":"","Index":0,"Amount":1,"Attributes":null},{"SlotID":6, "OutfitType":8, "ItemID":28545132,"ItemName":"Vest","CustomName":"","Index":0,"Amount":2,"Attributes":null},{"SlotID":12, "OutfitType":1, "ItemID":285451,"ItemName":"Mask","CustomName":"","Index":0,"Amount":5,"Attributes":null},{"SlotID":1, "ItemID":285452,"ItemName":"Phone","CustomName":"iPhone XS","Index":1,"Amount":4,"Attributes":{"PhoneNumber":"1687630","PhoneNumberLength":8,"ContactList":null,"PhoneEnabled":true,"PhoneType":1,"FriendlyName":null,"PhoneCode":"","CustomName":"iPhone XS"}},{"SlotID":2, "ItemID":285457,"ItemName":"Flashlight","CustomName":"","Index":2,"Amount":1,"Attributes":null},{"SlotID": 3, "ItemID":1109511,"ItemName":"Pistol Ammo","CustomName":"","Index":3,"Amount":13,"Attributes":null},{ "SlotID": 4, "ItemID":1109511,"ItemName":"Pistol Ammo","CustomName":"","Index":3,"Amount":3,"Attributes":null}]';
+var myItemsObj = [];
+var myItemsPush = [];
+var myItemsSplit = [];
 
-let characterCreationArray = [
-    // mother
-    [
-        'Ханна',
-        'Одри',
-        'Жасмин',
-        'Жизель',
-        'Амелия',
-        'Изабелла',
-        'Зоуи',
-        'Ава',
-        'Камила',
-        'Виолетта',
-        'Софая',
-        'Эвелин',
-        'Николь',
-        'Эшли',
-        'Грейс',
-        'Брианна',
-        'Натали',
-        'Оливия',
-        'Елизавета',
-        'Шарлотта',
-        'Эмма',
-        'Мисти'
-    ],
-    // father
-    [
-        'Бенджамин',
-        'Даниэль',
-        'Джошуа',
-        'Ноа',
-        'Эндрю',
-        'Хуан',
-        'Алекс',
-        'Айзек',
-        'Эван',
-        'Итан',
-        'Винмсент',
-        'Энджел',
-        'Диего',
-        'Эйдриен',
-        'Габриэль',
-        'Майкл',
-        'Сантьяго',
-        'Кевин',
-        'Луи',
-        'Самюэль',
-        'Энтони',
-        'Клод',
-        'Джон',
-        'Нико',
-    ],
-    // eyes-color
-    [
-        '#222222',
-        '#432434',
-        '#634322'
-    ],
-    // skin-color
-    [
-        '#ffffff',
-        '#000000',
-        '#634322'
-    ],
-    // hairstyle
-    [
-        'hairstyle1',
-        'hairstyle2',
-        'hairstyle3'
-    ]
-];
-
-let newChar = {
-    firstName: '',
-    lastName: '',
-    age: '',
-    gender: '',
-    mother: '',
-    father: '',
-    affinity: '',
-    colorSkin: '',
-};
-
-/*
-* test data
-* */
-
-/*
-* functions dummy calls
-* */
-// crateName(); // start
-secondStep();
-
-/*
-* main functions
-* */
-function crateName(){
-    setTimeout(() => {
-        char.name.classList.remove('hide')
-    }, 500)
-}
-
-char.firstName.oninput = function () {
-    validatorName();
-};
-char.lastName.oninput = function () {
-    validatorLastName();
-};
-char.male.oninput = function () {
-    char.playerGender = 1
-};
-char.female.oninput = function () {
-    char.playerGender = 0
-};
-char.age.oninput = function () {
-    validatorAge()
-};
-
-function createCharacterName() {
-
-    let firstName = char.firstName.value,
-        lastName = char.lastName.value,
-        age = char.age.value,
-        gender = char.playerGender;
-
-    if (!char.validFirstName) {
-        char.firstName.classList.add('error');
-        showError('Заполните все поля');
-    }
-    if (!char.validLastName) {
-        char.lastName.classList.add('error');
-        showError('Заполните все поля');
-    }
-    if (!char.validAge) {
-        char.age.classList.add('error');
-        showError('Заполните все поля');
-    }
-    if(char.validFirstName && char.validLastName && char.validAge){
-        console.log('firstName: ' + firstName + '; lastName: ' + lastName + '; age: ' + age + '; gender: ' + gender);
-
-        char.name.classList.add('hide');
-
-        char.inputtedFirstName.innerText = firstName;
-        char.inputtedLastName.innerText = lastName;
-        char.inputtedAge.innerText = age;
-        if(gender === 0) char.inputtedGender.innerText = 'Женский';
-        else char.inputtedGender.innerText = 'Мужской';
-
-        newChar.firstName = firstName;
-        newChar.lastName = lastName;
-        newChar.age = age;
-        newChar.gender = gender;
-        secondStep();
-    }
-}
-
-function validatorName() {
-    let value = char.firstName.value;
-
-    let rus = value.match(/[А-Яа-яёЁЇїІіЄєҐґ]/g),
-        iChars = value.match(/[^\d\sA-Z]/gi),
-        numbers = value.match(/[0-9]/g),
-        space = value.match(/\s/);
-
-    if (value.length === 0) {
-        char.validFirstName = false;
-    }
-
-    for (let i = 0; i < value.length; i++) {
-
-        char.firstName.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-
-        if (iChars || rus || space) {
-            showError('Имя может содержать только латинские символы.');
-            char.validFirstName = false;
-        } else if (numbers) {
-            showError('Имя не может содержать цифры.');
-            char.validFirstName = false;
-        } else {
-            char.validFirstName = true;
+Array.prototype.itemKey = function (id) {
+    for (let i = 0; i < this.length; i++) {
+        if (this[i].SlotID === id) {
+            return i;
         }
     }
-    if (!char.validFirstName) {
-        char.firstName.classList.add('error');
-    } else {
-        showError('');
-        char.firstName.classList.remove('error');
+};
+
+// showInventory
+function showInventory(id){
+    $('body').children(id).addClass('visible')
+}
+
+showInventory(defaultInventory); // show default-inventory
+// showInventory(warehouseInventory); // show warehouse-inventory
+// showInventory(vehicleInventory); // show warehouse-inventory
+
+// dummyCall
+function dummyCall() {
+    createItemBlock();
+    createWarehouseItemBlock();
+    createCarsItemBlock(50);
+    updatePlayerItems(myItems);
+    filling(myItemsPush);
+    dragAndDrop();
+    dragAndDropWarehouse();
+    dragAndDropVehicle();
+    mdModal();
+    dropDownList();
+    changeWeightOfItems();
+    changeWeightOfItemsWarehouse();
+    hoverItems();
+}
+dummyCall();
+
+// updatePlayerItems
+function updatePlayerItems(items) {
+    myItemsObj = JSON.parse(items);
+    myItemsPush = [];
+    myItemsObj.forEach(el => {
+        myItemsPush.push(
+            {
+                SlotID: el.SlotID,
+                OutfitType: el.OutfitType,
+                id: el.ItemID,
+                name: el.ItemName,
+                img: 'img/pizza.svg',
+                quantityValue: el.Amount,
+                singleWeight: 0.2,
+                interactionFirst: 'Съесть',
+                interactionSecond: 'Выбросить'
+            }
+        )
+    });
+}
+
+function pushToMyItemsObj(array) {
+    myItemsObj.push(
+        {
+            SlotID: +array[0].SlotID,
+            OutfitType: +array[0].OutfitType,
+            ItemID: +array[0].id,
+            ItemName: array[0].name,
+            Amount: +array[0].quantityValue,
+        }
+    );
+    myItems = JSON.stringify(myItemsObj);
+    dummyCall()
+}
+
+// Dynamically generating item blocks
+// data-slot = [1 - 25]
+function createItemBlock() {
+    itemsContainer.html('');
+    for (let i = 1; i <= 25; i++){
+        itemsContainer.append("<div data-slot=\"" + i +"\" class=\"item-block item-block" + i + " js-item-block\"></div>");
     }
 }
 
-function validatorLastName() {
-    let value = char.lastName.value;
-
-    let rus = value.match(/[А-Яа-яёЁЇїІіЄєҐґ]/g),
-        iChars = value.match(/[^\d\sA-Z]/gi),
-        numbers = value.match(/[0-9]/g),
-        space = value.match(/\s/);
-
-    if (value.length === 0) {
-        char.validLastName = false;
+// Dynamically generating items-warehouse blocks
+// data-slot = [101 - 201]
+function createWarehouseItemBlock() {
+    warehouseItemsContainer.html('');
+    for (let i = 101; i < 201; i++){
+        warehouseItemsContainer.append("<div data-slot=\"" + i +"\" class=\"item-block item-block" + i + " js-item-block\"></div>");
     }
+}
 
-    for (let i = 0; i < value.length; i++) {
+// Dynamically generating items-warehouse blocks
+// data-slot = [201 - (201 + amountOfSlots)]
+function createCarsItemBlock(amountOfSlots) {
+    warehouseItemsContainer.html('');
+    for (let i = 201; i < (201 + amountOfSlots); i++){
+        warehouseItemsContainer.append("<div data-slot=\"" + i +"\" class=\"item-block item-block" + i + " js-item-block\"></div>");
+    }
+}
 
-        char.lastName.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+// filling items in slots
+function filling(itemsVar) {
+    for (let i = 0; i < itemsVar.length; i++) {
+        gettingItemDataFromArray(itemsVar[i]);
+    }
+}
 
-        if (iChars || rus || space) {
-            showError('Фамилия может содержать только латинские символы.');
-            char.validLastName = false;
-        } else if (numbers) {
-            showError('Фамилия не может содержать цифры.');
-            char.validLastName = false;
-        } else {
-            char.validLastName = true;
+// filling items-data from array
+function gettingItemDataFromArray(item) {
+    let weight = item.singleWeight * item.quantityValue;
+    let thisBlock = $('.js-item-block[data-slot=\'' + item.SlotID  + '\']');
+    $(thisBlock)
+        .html(
+            "<div class=\"item js-item \" data-slot-id=\"" + item.SlotID + "\" data-item-type=\"" + item.OutfitType + "\" data-id=\"" + item.id + "\">" +
+            "<img class=\"item-img\" src=\"" + item.img + "\" alt=\"\">" +
+            "<p class=\"item-weight\"><span class=\"value\">" + weight.toFixed(1) + "</span> кг</p>" +
+            "<div class=\"item-title\"><p class=\"name\">" + item.name + "</p>" +
+            "<p class=\"quantity\">x<span class=\"quantity-value\">" + item.quantityValue + "</span></p>" +
+            "</div>" +
+            "<div class=\"interaction-menu\" style='display: none'>" +
+            "<button class=\"interaction-item1\">" + item.interactionFirst + "</button>" +
+            "<button class=\"interaction-item1 md-trigger\" data-modal=\"modal-1\">" + item.interactionSecond + "</button>" +
+            "</div>" +
+            "</div>"
+        );
+}
+
+// getSlotData function-closure
+function getSlotData(dataName){
+    return function (uiDraggable) {
+        return +(uiDraggable.attr(dataName));
+    }
+}
+
+// get array-key with help value
+function getItemArrayKey(arr, value) {
+    for(var i =0; i < myItemsObj.length; i++){
+        if (arr[i].SlotID === value) return i;
+    }
+}
+
+// get array-key with help value
+function getSlotArrayKey(arr, value) {
+    for(var i =0; i < myItemsObj.length; i++){
+        if (arr[i].SlotID === value) return i;
+    }
+}
+
+function dragAndDrop() {
+    let $draggableBlock = $("#my-items .js-item");
+    let $droppableBlock = $( "#my-items .js-item-block" );
+    let $droppableBlockQuick = $( "#quick-use .js-item-block" );
+    let $droppableBlockUsed = $( ".used-items" );
+    let $droppableBlockUsedItemBlock = $( ".used-items .js-item-block" );
+
+    $draggableBlock.draggable({
+        containment: "#my-items",
+        cursor: 'move',
+        revert: true,
+        revertDuration: 0,
+        start:function (){
+            hoverOutWearSlots($(this));
+        },
+        helper: function(event) {
+            if (event.originalEvent.ctrlKey) {
+                return $(this).clone();
+            }
+            else {
+                return $(this)
+            }
+        },
+        drag: function () {
+            $(".js-item-block").removeClass('hover');
+            $(this).parent().addClass('z-index-max');
+        },
+        stop: function () {
+            $droppableBlock.removeClass('hover-type');
+            $droppableBlock.removeClass('z-index-max');
+            $droppableBlockUsed.removeClass('z-index-max');
+        }
+    });
+
+    $droppableBlock.droppable({
+        // greedy: true,
+        revert: true,
+        revertDuration: 0,
+        over: function (event, ui) {
+            let uiDraggableSlotId = getSlotID(ui.draggable),
+                uiDraggableItemId = getItemID(ui.draggable),
+                uiDraggableSlotId2 = +ui.draggable.parent().attr('data-slot'),
+                thisId = + $(this).attr('data-slot'),
+                thisItemId = + $(this).find('.js-item').attr('data-id');
+
+            $(this).addClass('hover');
+            $droppableBlock.droppable('enable');
+
+            if((uiDraggableItemId === thisItemId) && (uiDraggableSlotId === thisId) ){
+                $(this).droppable('disable');
+            }
+            else if((uiDraggableItemId === thisItemId) && (uiDraggableSlotId2 > 25)) {
+                $(this).droppable('disable');
+            }
+            else if(uiDraggableItemId === thisItemId){
+                $(this).droppable('enable');
+            }
+            else if ($(this).has('.js-item').length) {
+                $(this).droppable('disable');
+            }
+        },
+        drop: function (event, ui) {
+            let uiDraggableSlotId = getSlotID(ui.draggable),
+                uiDraggableItemId = getItemID(ui.draggable),
+                thisId = + $(this).attr('data-slot'),
+                thisItemId = + $(this).find('.js-item').attr('data-id');
+
+            if( (uiDraggableItemId === thisItemId) && (uiDraggableSlotId !== thisId) ){
+                stackItems(ui.draggable,$(this));
+            }
+            else if (event.originalEvent.ctrlKey && (+ui.draggable.find('.quantity-value').html() !== 1)) {
+                modalInteractionSplit(getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+            else {
+                $(this).append(ui.draggable);
+                updateID(ui.draggable,getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+
+        }
+    });
+
+    $droppableBlockUsed.droppable({
+        drop:function( event, ui ){
+            $('.js-item-block').removeClass('hover');
+            dropToOutfit($(this),ui.draggable);
+            $(this).children(".js-item-block[data-outfit-type='" + getOutfitType(ui.draggable) + "']").addClass('not-empty')
+
+        }
+    });
+
+    $droppableBlockUsedItemBlock.droppable({
+        over: function( event, ui ){
+            var uiDraggableSlotId = getSlotID(ui.draggable);
+
+            if ($(this).has('.js-item').length) {
+                $(this).droppable('disable');
+            }
+            if (uiDraggableSlotId >= 30 && uiDraggableSlotId <= 42){
+                $('.used-items').addClass('z-index-max');
+            }
+            $(this).removeClass('not-empty')
+
+        },
+        drop: function ( event, ui ) {
+            var outfitSlotType = + $(this).attr('data-outfit-type');
+            if(getOutfitType(ui.draggable) === outfitSlotType){
+                $(this).addClass('not-empty')
+            }
+        }
+    });
+
+    $droppableBlockQuick.droppable({
+        drop:function( event, ui ){
+            $(this).append(ui.draggable);
+            updateID(ui.draggable,getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+        }
+    });
+
+}
+
+function dragAndDropWarehouse() {
+    let $draggableBlock = $("#warehouse .js-item");
+    let $droppableBlock = $( "#warehouse .js-item-block" );
+
+    $draggableBlock.draggable({
+        containment: "#warehouse",
+        cursor: 'move',
+        revert: true,
+        revertDuration: 0,
+        start: function () {
+            $(this).removeClass('hover');
+        },
+        drag: function () {
+            $(this).removeClass('hover');
+        },
+        stop: function () {
+            $('.js-warehouse-items-container').removeClass('z-index-max');
+            $('.js-item-block').removeClass('hover');
+        }
+    });
+
+    $droppableBlock.droppable({
+        revert: true,
+        revertDuration: 0,
+        over: function (event, ui) {
+            let uiDraggableSlotId = getSlotID(ui.draggable),
+                uiDraggableItemId = getItemID(ui.draggable),
+                thisId = +$(this).attr('data-slot'),
+                thisItemId = +$(this).find('.js-item').attr('data-id');
+
+            $(this).addClass('hover');
+            $droppableBlock.droppable('enable');
+
+            if ((uiDraggableItemId === thisItemId) && (uiDraggableSlotId === thisId)) {
+                $(this).droppable('disable');
+            }
+            else if (uiDraggableItemId === thisItemId) {
+                $(this).droppable('enable');
+            }
+            else if ($(this).has('.js-item').length) {
+                $(this).droppable('disable');
+            }
+
+            if (uiDraggableSlotId > 100){
+                $('.js-warehouse-items-container').addClass('z-index-max');
+            }
+        },
+        out: function () {
+            $(this).removeClass('hover');
+        },
+        drop: function (event, ui) {
+            let uiDraggableSlotId = getSlotID(ui.draggable),
+                uiDraggableItemId = getItemID(ui.draggable),
+                thisId = + $(this).attr('data-slot'),
+                thisItemId = + $(this).find('.js-item').attr('data-id');
+
+            if( (uiDraggableItemId === thisItemId) && (uiDraggableSlotId !== thisId) ){
+                stackItems(ui.draggable,$(this));
+            }
+            else if (event.originalEvent.ctrlKey && (+ui.draggable.find('.quantity-value').html() !== 1)) {
+                modalInteractionSplit(getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+            else {
+                $(this).append(ui.draggable);
+                updateID(ui.draggable,getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+        }
+    });
+}
+
+function dragAndDropVehicle() {
+    let $draggableBlock = $("#vehicle .js-item"),
+        $droppableBlock = $( "#vehicle .js-item-block" );
+
+    $draggableBlock.draggable({
+        containment: "#vehicle",
+        cursor: 'move',
+        revert: true,
+        revertDuration: 0,
+        start: function () {
+            $(this).removeClass('hover');
+        },
+        drag: function () {
+            $(this).removeClass('hover');
+        },
+        stop: function () {
+            $('.js-warehouse-items-container').removeClass('z-index-max');
+            $('.js-item-block').removeClass('hover');
+        }
+    });
+
+    $droppableBlock.droppable({
+        revert: true,
+        revertDuration: 0,
+        over: function (event, ui) {
+            var uiDraggableSlotId = getSlotID(ui.draggable);
+            var uiDraggableItemId = getItemID(ui.draggable);
+            var thisId = +$(this).attr('data-slot');
+            var thisItemId = +$(this).find('.js-item').attr('data-id');
+            $(this).addClass('hover');
+            $droppableBlock.droppable('enable');
+
+            if ((uiDraggableItemId === thisItemId) && (uiDraggableSlotId === thisId)) {
+                $(this).droppable('disable');
+            }
+            else if (uiDraggableItemId === thisItemId) {
+                $(this).droppable('enable');
+            }
+            else if ($(this).has('.js-item').length) {
+                $(this).droppable('disable');
+            }
+
+            if (uiDraggableSlotId > 100){
+                $('.js-warehouse-items-container').addClass('z-index-max');
+            }
+        },
+        out: function () {
+            $(this).removeClass('hover');
+        },
+        drop: function (event, ui) {
+            let uiDraggableSlotId = getSlotID(ui.draggable),
+                uiDraggableItemId = getItemID(ui.draggable),
+                thisId = + $(this).attr('data-slot'),
+                thisItemId = + $(this).find('.js-item').attr('data-id');
+
+            if( (uiDraggableItemId === thisItemId) && (uiDraggableSlotId !== thisId) ){
+                stackItems(ui.draggable,$(this));
+            }
+            else if (event.originalEvent.ctrlKey && (+ui.draggable.find('.quantity-value').html() !== 1)) {
+                modalInteractionSplit(getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+            else {
+                $(this).append(ui.draggable);
+                updateID(ui.draggable,getSlotID(ui.draggable),getItemID(ui.draggable),getDropBlockID($(this)));
+            }
+
+        }
+    });
+
+}
+
+// lighting OutWearSlots if u drag item with this type
+function hoverOutWearSlots($this){
+    let SlotKey = getSlotArrayKey(myItemsObj,getSlotID($this)),
+        ItemType = myItemsObj[SlotKey].OutfitType;
+
+    $usedItemsBlock.children('[data-outfit-type="'+ItemType+'"]').addClass('hover-type');
+}
+
+// automatically dropping items to outwear-slots
+function dropToOutfit($this, uiDraggable){
+    let slot = getSlotID(uiDraggable),
+        itemType = getOutfitType(uiDraggable);
+
+    for (var i = 1; i <= 13; i++){
+        if (i === itemType) {
+            let dataSlot = + $this.children('[data-outfit-type="'+i+'"]').attr('data-slot');
+
+            if ($this.children('[data-outfit-type="'+i+'"]').has('.js-item').length) {
+                break;
+            }
+
+            for (var j = 0; j <= myItemsObj.length; j++){
+                if (myItemsObj[j].SlotID === slot) {
+
+                    putOnItems($this ,uiDraggable, j, dataSlot, itemType);
+
+                    break;
+                }
+            }
+            break;
         }
     }
+}
 
-    if (!char.validLastName) {
-        char.lastName.classList.add('error');
-    } else {
-        showError('');
-        char.lastName.classList.remove('error');
+function putOnItems($this, uiDraggable, itemKey, dataSlot, OutfitType) {
+    let itemName = myItemsObj[itemKey].ItemName,
+        itemId = myItemsObj[itemKey].ItemID,
+        itemAmount = myItemsObj[itemKey].Amount;
+
+    if (itemAmount > 1){
+        myItemsObj[itemKey].Amount = itemAmount -1;
+        newArray(dataSlot, itemName, itemId, '1', OutfitType);
+    }
+    else {
+        $usedItemsBlock.children('[data-slot="'+dataSlot+'"]').append(uiDraggable);
+        updateID(uiDraggable,+uiDraggable.attr('data-slot-id'),getItemID(uiDraggable),dataSlot);
     }
 }
 
-function validatorAge() {
-    let value = char.age.value,
-        numbers = value.match(/[0-9]/g);
-
-    if (value.length === 0) {
-        char.validAge = false;
-        char.age.classList.add('error')
-    } else if(!numbers){
-        char.age.classList.add('error');
-        char.age.value = char.age.value.replace(/\D/g, "");
-        char.validAge = false;
-    }else {
-        char.age.value = char.age.value.replace(/\D/g, "");
-        showError('');
-        char.age.classList.remove('error');
-        char.validAge = true;
-    }
-}
-
-function showError(string) {
-    char.errors.innerText = string;
-}
-
-function backToStart() {
-    char.inputtedData.classList.add('hide');
-    char.back.classList.add('hide');
-    char.settingBlock.classList.add('hide');
-    setTimeout(() => {
-        char.name.classList.remove('hide')
-    }, 500)
-}
-
-
-function secondStep() {
-    setTimeout(() => {
-        char.back.classList.remove('hide');
-        char.back.classList.remove('hide');
-        char.settingBlock.classList.remove('hide');
-        char.inputtedData.classList.remove('hide');
-    }, 500)
-}
-
-function randomSetting() {
-    console.log('random');
-}
-
-/*
-* tabs
-* */
-char.tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        let activeTab = tab.classList.contains('active'),
-            thisIndex = tab.dataset.index,
-            $thisTabContainer = document.querySelector(`.js_tab_container[data-index='${thisIndex}']`);
-
-        if(!activeTab){
-            for ( let item of char.tabs) item.classList.remove('active');
-            for ( let item of char.tabsContainers) item.classList.remove('active');
-
-            tab.classList.add('active');
-            $thisTabContainer.classList.add('active');
+// updating ISs when item is dropped
+function updateID(ui, slotId, itemId, dropBlockID) {
+    for (let i = 0; i < myItemsObj.length; i++) {
+        if (myItemsObj[i].SlotID === slotId) {
+            myItemsObj[i].SlotID = dropBlockID;
+            ui.attr('data-slot-id', dropBlockID);
+            myItems = JSON.stringify(myItemsObj);
+            break;
         }
-    })
+    }
+    changeWeightOfItems();
+    changeWeightOfItemsWarehouse();
+}
+
+// stackItems
+function stackItems(uiDraggable, $this){
+    let uiDraggableSlotId = getSlotID(uiDraggable),
+        thisSlotId = +$this.attr('data-slot'),
+        uiDraggableItemArrayKey = getSlotArrayKey(myItemsObj, uiDraggableSlotId),
+        uiDraggableItemAmount = myItemsObj[uiDraggableItemArrayKey].Amount;
+
+    stackBlockAmount(thisSlotId, uiDraggableItemAmount);
+    myItemsObj.splice(uiDraggableItemArrayKey, 1);
+    myItems = JSON.stringify(myItemsObj);
+    dummyCall()
+}
+
+// stack ItemBlockAmount
+function stackBlockAmount(SlotID, uiDraggableItemAmount) {
+    for (let i = 0; i < myItemsObj.length; i++) {
+        if (myItemsObj[i].SlotID === SlotID) {
+            var oldAmount = myItemsObj[i].Amount ;
+            myItemsObj[i].Amount = oldAmount + uiDraggableItemAmount;
+            break;
+        }
+    }
+}
+
+// Generating modal for item
+function modalInteractionDrop() {
+
+    let item = '.js-item',
+        modalID = $('.js-modal-1'),
+        inputMaxValue = $('#myRange');
+
+    $('.js-item-block').on('click', item, function () {
+
+        let thisItemID = +($(this).attr('data-slot-id')),
+            thisItemKey = getItemArrayKey(myItemsObj, thisItemID),
+            ItemName = myItemsObj[thisItemKey].ItemName,
+            ItemAmount = myItemsObj[thisItemKey].Amount;
+
+        modalID.find('.js-modal-item-name').text(ItemName);
+        modalID.find('.js-value').text(ItemAmount);
+        inputMaxValue.attr('max', ItemAmount);
+        inputMaxValue.val('1');
+
+        $('.js-button-max').on('click', function () {
+            $('#myRange').val(ItemAmount);
+            $('#input-value').text(ItemAmount);
+        });
+
+        changeUnderTheLineValue();
+    });
+}
+
+function modalInteractionSplit(slotId, itemId, dropBlockID) {
+    let thisItemKey = myItemsObj.itemKey(slotId),
+        thisItemAmount = myItemsObj[thisItemKey].Amount,
+        inputId = $('#input-divide');
+
+    $modalSplit.attr('data-slot-id', slotId);
+    $modalSplit.attr('data-drop-slot-id', dropBlockID);
+
+    $('.js-modal-2-button').click();
+    inputId.val('1');
+    inputId.attr('max', thisItemAmount);
+    rangeOfInputSplit(thisItemAmount);
+
+    $('.js-modal-2-min').on('click', function () {
+        inputId.val('1');
+    });
+    $('.js-modal-2-half').on('click', function () {
+        inputId.val(Math.ceil(thisItemAmount / 2));
+    });
+    $('.js-modal-2-max').on('click', function () {
+        inputId.val(thisItemAmount - 1);
+    });
+
+}
+
+$modalSplit.on('click', '.js-split', function () {
+    let slotId = + $modalSplit.attr('data-slot-id'),
+        dropSlotId = + $modalSplit.attr('data-drop-slot-id'),
+        thisItemKey = myItemsObj.itemKey(slotId),
+        inputId = $('#input-divide'),
+        inputValue;
+
+    inputValue = inputId.val();
+
+    splitItem(thisItemKey, slotId, dropSlotId, inputValue);
+    $modalSplit.removeClass('md-show');
 });
 
-class RangeSlider{
-    constructor(key, maxValue){
-        this.object = newChar;
-        this.$parent = document.querySelector(`#${key}`);
-        this.key =  key;
-        this.value = maxValue;
-        this.object[this.key] = this.value/2;
-        this.create();
-    }
+// add value from split-popup
+function rangeOfInputSplit(maxValue){
+    let app = {
+        vars: {
+            input: document.getElementById('input-divide'),
+            min: 1,
+            max: maxValue - 1
+        },
 
-    create(){
-        this.$parent
-            .innerHTML = `
-                <input class="${this.key}" type="range" step="1" value="${this.value/2}" min="1" max="${this.value}">
-            `;
+        keyup: function() {
+            if(app.vars.input.value.length >= 0 && app.vars.input.value.length <= 2) {
+                setTimeout (function(){
+                    if(app.vars.input.value.length !== 0) {
+                        if(app.vars.input.value < app.vars.min) {
+                            app.vars.input.value = app.vars.min;
+                        }
+                    }
+                }, 500);
+            }
 
-        $('input[type=range]').rangeslider({
-            polyfill: false,
-        });
-
-        this.$className = document.querySelector(`.${this.key}`);
-
-        this.$className.oninput = () => {
-            this.object[this.key] = this.$className.value;
-        }
-    }
-}
-
-class TextSlider {
-    constructor(key, arrayIndex, itemIndex){
-        this.object = newChar;
-        this.key = key;
-        this.$selector = document.querySelector(`#${this.key}`);
-        this.arrayIndex = arrayIndex;
-        this.itemIndex = itemIndex;
-        this.btnPrev = this.$selector.previousElementSibling;
-        this.btnNext = this.$selector.nextElementSibling;
-        this.arrayLength = characterCreationArray[this.arrayIndex].length;
-        this.lastIndex =  this.arrayLength - 1;
-
-        this.btnPrev.addEventListener('click', () => {
-            this.itemIndex--;
-            if(this.itemIndex === -1) this.itemIndex = this.lastIndex;
-            this.append();
-        });
-
-        this.btnNext.addEventListener('click', () => {
-            this.itemIndex++;
-            if(this.itemIndex === this.arrayLength) this.itemIndex = 0;
-            this.append();
-        });
-
-        this.append();
-    }
-
-    append(){
-        // this.object[this.key] = characterCreationArray[this.arrayIndex][this.itemIndex].toString(); // mother name
-        this.object[this.key] = this.itemIndex; // mother index
-        this.$selector.innerText = characterCreationArray[this.arrayIndex][this.itemIndex];
-    }
-
-}
-
-class ColorSelect {
-    constructor(key, colorArray){
-        this.object = newChar;
-        this.key = key;
-        this.$selector = document.querySelector(`#${this.key}`);
-        this.colorArray = colorArray;
-        this.object[this.key] = 0;
-        this.append();
-    }
-
-    append(){
-        for(let i = 0; i < this.colorArray.length; i++){
-            this.color = this.colorArray[i];
-            this.$selector.insertAdjacentHTML('beforeend', `
-                <div data-index="${i}" class="item js_color_item" style="background: ${this.color}"></div>
-            `)
-        }
-        this.appendToNewChar();
-
-    }
-    appendToNewChar(){
-        this.items = this.$selector.querySelectorAll('.js_color_item');
-
-        this.items.forEach(item => {
-            item.addEventListener('click', () => {
-                if(!item.classList.contains('active')){
-                    for(let el of this.items) el.classList.remove('active');
-                    item.classList.add('active')
+            if(app.vars.input.value.length >= 2) {
+                if(app.vars.input.value >= app.vars.max) {
+                    app.vars.input.value = app.vars.max;
                 }
-                this.index = +item.dataset.index;
-                this.object[this.key] = this.index;
-            })
-        })
-    }
+            }
+        },
 
+        init: function() {
+            app.vars.input.onkeyup = app.keyup;
+        }
+    };
+
+    app.init();
 }
 
-new TextSlider( 'mother', 0, 0);
-new TextSlider( 'father', 1, 0);
+function splitItem(thisItemKey, slotId, dropBlockID, inputValue) {
+    let splitedItemKey = myItemsObj.itemKey(slotId),
+        splitedId = myItemsObj[splitedItemKey].ItemID,
+        splitedType = myItemsObj[splitedItemKey].OutfitType,
+        splitedName = myItemsObj[splitedItemKey].ItemName,
+        splitedQuantityValue = myItemsObj[splitedItemKey].Amount,
+        newAmount = splitedQuantityValue - inputValue;
 
-new RangeSlider( 'affinity', 10);
-new RangeSlider( 'colorSkin', 10);
-new RangeSlider( 'browsHeight', 10);
-new RangeSlider( 'browsDepth', 10);
-new RangeSlider( 'browsSaturation', 10);
-new RangeSlider( 'eyes', 10);
+    myItemsObj[splitedItemKey].Amount = newAmount;
+    newArray(dropBlockID, splitedName, splitedId, inputValue, splitedType);
+}
 
-new RangeSlider( 'cheekbonesHeight', 10);
-new RangeSlider( 'cheekbonesWidth', 10);
-new RangeSlider( 'cheeksDepth', 10);
+// get draggable item data
+function newArray(splitSlotID, splitItemName, splitItemID, splitAmount, OutfitType) {
+    myItemsSplit = [];
+    myItemsSplit.push(
+        {
+            SlotID: splitSlotID,
+            OutfitType: OutfitType,
+            id: splitItemID,
+            name: splitItemName,
+            img: 'img/pizza.svg',
+            quantityValue: splitAmount,
+            singleWeight: 0.2,
+            interactionFirst: 'Съесть',
+            interactionSecond: 'Выбросить'
+        }
+    );
+    pushToMyItemsObj(myItemsSplit)
+}
 
-new RangeSlider( 'noseWidth', 10);
-new RangeSlider( 'noseHeight', 10);
-new RangeSlider( 'noseTip', 10);
-new RangeSlider( 'noseTipWidth', 10);
-new RangeSlider( 'noseTipHeight', 10);
-new RangeSlider( 'noseBreak', 10);
+// total weight of items
+function weightOfItems() {
+    var sum = 0;
+    for (var i = 0; i < myItemsObj.length; i++) {
+        if (myItemsObj[i].SlotID <= 25) {
+            sum += myItemsObj[i].Amount * singleWeightTemporary;
+        }
+    }
+    return sum;
+}
 
-new RangeSlider( 'jawWidth', 10);
-new RangeSlider( 'jawHeight', 10);
+// change weight of items ===> linePercent(); weightOfItems();
+function changeWeightOfItems() {
+    $('.amount-of-space .total').html(weightOfItems().toFixed(1));
 
-new RangeSlider( 'chinWidth', 10);
-new RangeSlider( 'chinHeight', 10);
-new RangeSlider( 'chinDepth', 10);
-new RangeSlider( 'chinDimple', 10);
+    function linePercent() {
+        let totalValue = 10;
+        let result = totalValue / 100 * weightOfItems();
+        if (result >= 1) {
+            return 100 + '%'
+        }
+        else {
+            return result * 100 + '%';
+        }
+    }
 
-new RangeSlider( 'neckWidth', 10);
+    $('.filling-percentage').css('width', linePercent());
+}
 
-new RangeSlider( 'skinPigmentation', 10);
-new RangeSlider( 'skinSaturation', 10);
-new RangeSlider( 'aging', 10);
-new RangeSlider( 'burns', 10);
-new RangeSlider( 'acne', 10);
-new RangeSlider( 'freckles', 10);
+// total weight of items
+function weightOfItemsWarehouse() {
+    var sum = 0;
+    for (var i = 0; i < myItemsObj.length; i++) {
+        if (myItemsObj[i].SlotID >= 101) {
+            sum += myItemsObj[i].Amount * singleWeightTemporary;
+        }
+    }
+    return sum;
+}
 
-new ColorSelect( 'eyesColor', characterCreationArray[2]);
-new ColorSelect( 'skinColor', characterCreationArray[3]);
-new ColorSelect( 'hairColor', characterCreationArray[3]);
-new ColorSelect( 'hairAdditionalColor', characterCreationArray[3]);
+// change weight of items
+function changeWeightOfItemsWarehouse() {
+    $('.amount-of-space-warehouse .total').html(weightOfItemsWarehouse().toFixed(1));
 
-new TextSlider( 'hairstyle', 4, 0);
-new TextSlider( 'eyebrowsStyle', 4, 0);
-new TextSlider( 'faceHair', 4, 0);
-new TextSlider( 'bodyHair', 4, 0);
+    function linePercent() {
+        let totalValue = 10;
+        let result = totalValue / 1000000 * weightOfItemsWarehouse();
+        if (result >= 1) {
+            return 100 + '%'
+        }
+        else {
+            return result * 100 + '%';
+        }
+    }
 
-new TextSlider( 'outerwear', 4, 0);
-new TextSlider( 'tShirts', 4, 0);
-new TextSlider( 'pants', 4, 0);
-new TextSlider( 'shoes', 4, 0);
+    $('.filling-percentage-warehouse').css('width', linePercent());
+}
 
-char.btnCreate.addEventListener('click', () => {
-    console.log(newChar)
+// click for item
+function dropDownList() {
+    let integrationMenuBlock = '#my-items .interaction-menu';
+    let item = '.item';
+
+    $('.items-block .item-block').on('click', item, function () {
+        $(this).children(integrationMenuBlock).slideToggle(0);
+        $(this).parent().addClass('active')
+    });
+    $(document).mouseup(function (e) { // событие клика по веб-документу
+        let div = $(integrationMenuBlock); // тут указываем ID элемента
+        if (!div.is(e.target) // если клик был не по нашему блоку
+            && div.has(e.target).length === 0) { // и не по его дочерним элементам
+            div.hide(); // скрываем его
+            $(item).parent().removeClass('active');
+        }
+    });
+
+    modalInteractionDrop();
+}
+
+// change value in modal-drop
+function changeUnderTheLineValue() {
+    let inputSlider = $('#myRange').attr('value');
+    let inputDemo = $('#input-value');
+    inputDemo.text(inputSlider);
+    $(document).on('input', '#myRange', function () {
+        let $item = $(this),
+            value = $item.val();
+
+        inputDemo.text(value);
+    });
+}
+
+// status circle change
+function changeStatusCircle(){
+
+    let satiety = {
+        value : 90,
+        id    : '#satiety',
+    };
+    let thirst = {
+        value : 30,
+        id    : '#thirst',
+    };
+    let mood = {
+        value : 100,
+
+        id    : '#mood',
+    };
+    let drugAddict = {
+        value : 0,
+        id    : '#drug-addict',
+    };
+
+    function currentValue(value)
+    {
+        for( let i = 0; i <= 100; i=(i+5)){
+            if(value <= i){
+                return i;
+            }
+        }
+    }
+    function changeCircle(elem)
+    {
+        let img = '<img src="img/status/' + elem.id.slice(1) + '/' + currentValue(elem.value) + '.svg" alt="">';
+        $(elem.id).find('.circle-front').html(img);
+        $(elem.id).find('.value').text(elem.value);
+    }
+    changeCircle(satiety);
+    changeCircle(thirst);
+    changeCircle(mood);
+    changeCircle(drugAddict);
+}
+changeStatusCircle();
+
+// md-modal
+function mdModal() {
+    let overlay = document.querySelector( '.md-overlay' );
+    [].slice.call( document.querySelectorAll( '.md-trigger' ) ).forEach( function( el, i ) {
+
+        let modal = document.querySelector( '#' + el.getAttribute( 'data-modal' ) ),
+            close = modal.querySelector( '.md-close' );
+
+        function removeModal( hasPerspective ) {
+            classie.remove( modal, 'md-show' );
+
+            if( hasPerspective ) {
+                classie.remove( document.documentElement, 'md-perspective' );
+            }
+        }
+
+        function removeModalHandler() {
+            removeModal( classie.has( el, 'md-setperspective' ) );
+        }
+
+        el.addEventListener( 'click', function( ev ) {
+            classie.add( modal, 'md-show' );
+            overlay.removeEventListener( 'click', removeModalHandler );
+            overlay.addEventListener( 'click', removeModalHandler );
+
+            if( classie.has( el, 'md-setperspective' ) ) {
+                setTimeout( function() {
+                    classie.add( document.documentElement, 'md-perspective' );
+                }, 25 );
+            }
+        });
+
+        close.addEventListener( 'click', function( ev ) {
+            ev.stopPropagation();
+            removeModalHandler();
+        });
+
+    } );
+}
+
+function hoverItems() {
+    $( ".js-item-block" ).hover(
+        function() {
+            $( this ).addClass( "hover" );
+        },
+        function() {
+            $( this ).removeClass( "hover" );
+        }
+    );
+}
+
+
+$(document).ready(function () {
+    document.getElementById('input-divide').onkeydown = function (e) {
+        return !(/^[А-Яа-яA-Za-z ]$/.test(e.key));  // IE > 9
+    };
 });

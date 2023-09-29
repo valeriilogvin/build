@@ -1,0 +1,30 @@
+@function get-vh($object) {
+  $vh: (1080 * 0.01) * 1px;
+  @return ($object / $vh) * 1vh;
+}
+
+$makro-extra-bold: 'Makro ExtraBold', sans-serif;
+$makro-light: 'Makro Light', sans-serif;
+$circe-bold: 'Circe Bold', sans-serif;
+$circe-extra: 'Circe ExtraBold', sans-serif;
+$circe-light: 'Circe Light', sans-serif;
+$circe-extra-light: 'Circe ExtraLight';
+$circe-regular: 'Circe Regular', sans-serif;
+
+$color-text-black: #25272E;
+$color-text-red : #DD4E4E;
+$color-background-red : #D91515;
+
+$container-height: 65vh;
+$items-weight: 60vh;
+$items-container-size: 55vh;
+$item-size: 10vh;
+$font-18: 1.66vh; //18px
+$font-14: 1.3vh; //14px
+
+$box-shadow-line: inset 0 0 get-vh(5px) get-vh(2px) #D91515, 0 0 get-vh(5px) get-vh(2px) #D91515;
+$items-background: rgba(37, 39, 46, 0.4);
+$item-border: 0.1vh solid rgba(255, 255, 255, 0.4);
+$item-border-hover: 0px 0px get-vh(4px) get-vh(1px) #D91515;
+$item-border-radius: 1.38vh;
+

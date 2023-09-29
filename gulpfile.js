@@ -14,6 +14,8 @@ let gulp         = require("gulp"),
     cache        = require('gulp-cache'),
     reload       = browserSync.reload;
 
+// let projectName = 'outlife-circular-menu';
+
 // пути к файлам
 var path = {
 
@@ -21,25 +23,25 @@ var path = {
         html: 'build/',
         js: 'build/js',
         css: 'build/css',
-        jsLibs: "build/js",
-        cssLibs: "build/css",
+        jslibs: "build/js",
+        csslibs: "build/css",
         fonts: "build/fonts",
     },
     src: {
         html: "src/*html",
         js: "src/js/*.js",
-        css: "src/css/**/*.scss",
-        jsLibs: "src/js/libs/**/*.js",
-        cssLibs: "src/css/libs/**/*.css",
-        fonts: "src/fonts/**/*.woff"
+        style: "src/style/*.scss",
+        jslibs: "src/jslibs/*.js",
+        csslibs: "src/csslibs/*.css",
+        fonts: "src/fonts/*.woff"
     },
     watch: {  //  пути к файлам, за которыми будем следить
         html: "src/**/*.html",
         js: "src/js/**/*.js",
-        css: "src/css/**/*.scss",
-        jsLibs: "src/js/libs/**/*.js",
-        cssLibs: "src/css/libs/**/*.css",
-        fonts: "src/fonts/**/*.woff"
+        style: "src/style/**/*.scss",
+        jslibs: "src/jslibs/*.js",
+        csslibs: "src/csslibs/*.css",
+        fonts: "src/fonts/*.woff"
     }
 };
 
@@ -79,66 +81,55 @@ gulp.task("fonts:build", function() {
 });
 
 // сборка css
-gulp.task("css:build", function() {
-    return gulp.src(path.src.css)
+gulp.task("style:build", function() {
+    return gulp.src(path.src.style)
         .pipe(sass())
         .pipe(preFixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
         .pipe(gulp.dest(path.build.css))
         .pipe(reload({stream: true}));
 });
 
-// сборка css-библиотек
-gulp.task("cssLibs:build", function() {
-    return gulp.src(path.src.cssLibs)
-        .pipe(gulp.dest(path.build.cssLibs)) // Выгружаем в папку build/css
-        .pipe(reload({stream: true})); // Обновляем css на странице при изменении
+// сборка js-библиотек
+gulp.task("jslibs:build", function() {
+    return gulp.src(path.src.jslibs)
+        .pipe(concat('libs.min.js')) // Собираем их в кучу в новом файле libs.min.js
+        .pipe(uglify()) // Сжимаем JS файл
+        .pipe(gulp.dest(path.build.jslibs)) // Выгружаем в папку build/js
+        .pipe(reload({stream: true})); // Обновляем js на странице при изменении
 });
 
-// сборка js-библиотек
-gulp.task("jsLibs:build", function() {
-    return gulp.src(path.src.jsLibs)
-        .pipe(gulp.dest(path.build.jsLibs)) // Выгружаем в папку build/js как есть
-        .pipe(reload({stream: true})); // Обновляем js на странице при изменении
+gulp.task("csslibs:build", function() {
+    return gulp.src(path.src.csslibs)
+        .pipe(cssnano()) // Сжимаем
+        .pipe(concat('libs.min.css')) // Собираем их в кучу в новом файле libs.min.css
+        .pipe(gulp.dest(path.build.csslibs)) // Выгружаем в папку build/css
+        .pipe(reload({stream: true})); // Обновляем css на странице при изменении
+
 });
 
 // таск для сборки
 gulp.task("build",
     gulp.parallel(
-        "html:build",
-        "css:build",
-        "js:build",
+        "csslibs:build",
         "fonts:build",
-        "cssLibs:build",
-        "jsLibs:build"
+        "jslibs:build",
+        "html:build",
+        "js:build",
+        "style:build"
     )
 );
 
-// сборка js-библиотек
-gulp.task("js.min", function() {
-    return gulp.src(path.src.jsLibs)
-        .pipe(concat('libs.min.js')) // Собираем их в кучу в новом файле libs.min.js
-        .pipe(uglify()) // Сжимаем JS файл
-        .pipe(gulp.dest(path.build.jsLibs)) // Выгружаем в папку build/js
-});
 
-gulp.task("css.min", function() {
-    return gulp.src(path.src.cssLibs)
-        .pipe(cssnano()) // Сжимаем
-        .pipe(gulp.dest(path.build.cssLibs)) // Выгружаем в папку build/css
-        .pipe(concat('libs.min.css')) // Собираем их в кучу в новом файле libs.min.css
-        .pipe(gulp.dest(path.build.cssLibs)) // Выгружаем в папку build/css
-        .pipe(reload({stream: true})); // Обновляем css на странице при изменении
-});
 
 // оптимизация изображений
 gulp.task('img', function (){ // оптимизация изображений
     return gulp.src('src/img/**/*')
-    /*.pipe(cache(imagemin({
-        intelaced: true,
-        progressiveLazyLoad:true,
-        svgPlugins:[{removeViewBox: false}],
-        use: [pngquant()]
-    })))*/
+        /*.pipe(cache(imagemin({
+            intelaced: true,
+            progressiveLazyLoad:true,
+            svgPlugins:[{removeViewBox: false}],
+            use: [pngquant()]
+        })))*/
         .pipe(gulp.dest('build/img'));
 });
 
@@ -146,12 +137,12 @@ gulp.task('img', function (){ // оптимизация изображений
 
 // следим за изменениями
 gulp.task('watch' , function () {
-    gulp.watch([path.watch.css], { usePolling: true }, gulp.parallel('css:build'));
+    gulp.watch([path.watch.style], { usePolling: true }, gulp.parallel('style:build'));
     gulp.watch([path.watch.html], { usePolling: true }, gulp.parallel('html:build'));
     gulp.watch([path.watch.fonts], { usePolling: true }, gulp.parallel('fonts:build'));
     gulp.watch([path.watch.js], { usePolling: true }, gulp.parallel('js:build'));
-    gulp.watch([path.watch.jsLibs], { usePolling: true }, gulp.parallel('jsLibs:build'));
-    gulp.watch([path.watch.cssLibs], { usePolling: true }, gulp.parallel('cssLibs:build'));
+    gulp.watch([path.watch.jslibs], { usePolling: true }, gulp.parallel('jslibs:build'));
+    gulp.watch([path.watch.csslibs], { usePolling: true }, gulp.parallel('csslibs:build'));
     gulp.watch('src/img/**/*', { usePolling: true }, gulp.parallel('img'));
 });
 
@@ -164,3 +155,5 @@ gulp.task('clean', async function() {
 
 // дефолтный таск
 gulp.task('default', gulp.parallel("clean","img","build","webserver","watch"));
+
+

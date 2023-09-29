@@ -5,315 +5,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 
-    <link rel="stylesheet" href="css/outlife.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.theme.min.css">
 
 </head>
-<body>
+    <body>
+    <img class="logo" src="img/logo.svg" alt="">
+    <a href="#" class="close"><span>Закрыть</span></a>
+    <div id="my-items" class="wrapper">
+            <div class="main-container">
 
-    <div class="character-creation">
-        <a onclick="backToStart()" class="back hide js_back">
-            <svg viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 2H14V6H16V0H0V18H16V12H14V16H2V2Z" fill="white"/>
-                <path d="M8.92571 13.9498L10.3399 12.5356L7.80435 10H20V8.00001H7.80442L10.3399 5.46451L8.92571 4.05029L3.97596 9.00004L8.92571 13.9498Z" fill="white"/>
-            </svg>
-            Назад
-        </a>
-
-        <div class="character-creation__name js_create_name hide">
-            <p class="title">Создание персонажа</p>
-            <input class="js_first_name"  maxlength="15" type="text" name="first-name" placeholder="Имя">
-            <input class="js_last_name"  maxlength="15" type="text" name="last-name" placeholder="Фамилия">
-            <input class="js_age" maxlength="2" type="text" name="age" placeholder="Возраст">
-
-            <p class="errors js_errors"></p>
-
-            <span class="text">Выберите пол</span>
-            <div class="gender-selection">
-                <div class="female">
-                    <input type="radio" checked class="custom-checkbox js_female" id="female" name="gender">
-                    <label for="female">Женский</label>
+                <!-- block with items -->
+                <div class="items-block">
+                    <h1>Мои предметы</h1>
+                    <span class="amount-of-space"><span class="total"></span> из 10 кг</span>
+                    <div class="line-filling">
+                        <div class="filling-percentage" style="width: 30%;"></div>
+                    </div>
+                    <div class="items-container js-items-container">
+                        <!-- here must to be items -->
+                    </div>
+                    <p class="help">Чтобы <span class="red">разделить</span> используйте <span class="red">CTRL + ЛКМ</span> и перетащите предмет.</p>
+                    <p class="js-modal-2-button hidden help md-trigger" data-modal="modal-2"></p>
                 </div>
-                <div class="male">
-                    <input type="radio" class="custom-checkbox js_male" id="male" name="gender">
-                    <label for="male">Мужской</label>
+                <!-- block with items : END -->
+
+                <!-- block with usable items -->
+                <div class="used-items js-used-items">
+                    <div data-slot="30" data-outfit-type="1" class="item-block js-item-block head"></div>
+                    <div data-slot="31" data-outfit-type="2" class="item-block js-item-block glasses"></div>
+                    <div data-slot="32" data-outfit-type="3" class="item-block js-item-block mask"></div>
+                    <div data-slot="33" data-outfit-type="4" class="item-block js-item-block earrings"></div>
+                    <div data-slot="34" data-outfit-type="5" class="item-block js-item-block neck"></div>
+                    <div data-slot="35" data-outfit-type="6" class="item-block js-item-block outerwear"></div>
+                    <div data-slot="36" data-outfit-type="7" class="item-block js-item-block shirt"></div>
+                    <div data-slot="37" data-outfit-type="8" class="item-block js-item-block vest"></div>
+                    <div data-slot="38" data-outfit-type="9" class="item-block js-item-block wrist"></div>
+                    <div data-slot="39" data-outfit-type="10" class="item-block js-item-block watches"></div>
+                    <div data-slot="40" data-outfit-type="11" class="item-block js-item-block legs"></div>
+                    <div data-slot="41" data-outfit-type="12" class="item-block js-item-block gloves"></div>
+                    <div data-slot="42" data-outfit-type="13" class="item-block js-item-block shoes"></div>
+                </div>
+                <!-- block with usable items : END -->
+
+                <!-- block with statuses -->
+                <div class="status">
+                    <div id="satiety" class="item">
+                        <div class="text-block">
+                            <span class="percent"><span class="value"></span>%</span>
+                            <span class="text">СЫТОСТЬ</span>
+                        </div>
+                        <div class="circle-front"></div>
+                    </div>
+                    <div id="thirst" class="item">
+                        <div class="text-block">
+                            <span class="percent"><span class="value"></span>%</span>
+                            <span class="text">ЖАЖДА</span>
+                        </div>
+                        <div class="circle-front"></div>
+                    </div>
+                    <div id="mood" class="item">
+                        <div class="text-block">
+                            <span class="percent"><span class="value"></span>%</span>
+                            <span class="text">НАСТРОЕНИЕ</span>
+                        </div>
+                        <div class="circle-front"></div>
+                    </div>
+                    <div id="drug-addict" class="item">
+                        <div class="text-block">
+                            <span class="percent"><span class="value"></span>%</span>
+                            <span class="text">НАРКОЗАВИСИМОСТЬ</span>
+                        </div>
+                        <div class="circle-front"></div>
+                    </div>
+                </div>
+                <!-- block with statuses : END -->
+
+            </div>
+            <div id="quick-use">
+                <h2>Быстрый доступ</h2>
+                <div class="flex">
+                    <div data-slot="26" class="item-block js-item-block"></div>
+                    <div data-slot="27" class="item-block js-item-block"></div>
+                    <div data-slot="28" class="item-block js-item-block"></div>
+                    <div data-slot="29" class="item-block js-item-block"></div>
                 </div>
             </div>
-            <a class="create gradient-button" onclick="createCharacterName()"><span>Создать</span></a>
-            <a class="cancel">Отменить</a>
+
+
         </div>
 
-        <div class="character-creation__char-data hide js_inputted_data">
-            <p class="title">Общая информация <br /> о персонаже</p>
-            <div>
-                <div>
-                    <span>Имя</span>
-                    <p class="js_data_first_name"></p>
-                </div>
-                <div>
-                    <span>Фамилия</span>
-                    <p class="js_data_last_name"></p>
-                </div>
-                <div>
-                    <span>Возраст</span>
-                    <p class="js_data_age"></p>
-                </div>
-                <div>
-                    <span>Пол</span>
-                    <p class="js_data_gender"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="character-creation__settings js_setting_block hide">
-            <a class="random" onclick="randomSetting()">
-                <svg viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.3918 13.5715H17.643V10.8572L21.7144 14.9286L17.643 19V16.2857H17.3918C15.4356 16.2857 13.5742 15.4415 12.2853 13.9677L10.1787 11.5602L8.07202 13.9677C6.78312 15.4415 4.92165 16.2857 2.96547 16.2857H0V13.5715H2.96543C4.13901 13.5715 5.25628 13.0651 6.02962 12.1812L12.2852 5.0323C13.5741 3.55849 15.4356 2.71427 17.3918 2.71427H17.643V0L21.7143 4.07128L17.643 8.14282V5.42855H17.3918C16.2182 5.42855 15.1009 5.93481 14.3276 6.81883L11.9814 9.5L14.3276 12.1812C15.1009 13.0652 16.2182 13.5715 17.3918 13.5715ZM7.47436 8.46951L6.02966 6.81847C5.25628 5.93449 4.13905 5.42818 2.96547 5.42814H0V2.71387H2.96547C4.9217 2.71387 6.78312 3.55813 8.07202 5.03189L9.27724 6.40916L7.47436 8.46951Z" fill="white"/>
-                </svg>
-                Выбрать случайные настройки
-            </a>
-            <div class="tabs-container">
-                <div data-index="0" class="tab-container js_tab_container">
-                    <div class="select-block">
-                        <p class="type-title gradient-color">мать</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="mother" class="text">Biker</p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">Отец</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="father"  class="text">Biker</p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="title">Схожесть с родителями</p>
-                        <label id="affinity"></label>
-                    </div>
-                    <div class="range-slide">
-                        <p class="title">Цвет кожи</p>
-                        <label id="colorSkin"></label>
-                    </div>
-                 </div>
-
-                <div data-index="1" class="tab-container js_tab_container scroll">
-
-                    <p class="type-title gradient-color">брови</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота</p>
-                        <label id="browsHeight"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Глубина</p>
-                        <label id="browsDepth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Насыщенность</p>
-                        <label id="browsSaturation"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">Глаза</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Размер</p>
-                        <label id="eyes"></label>
-                        <div class="eyes-color color-block">
-                            <span class="text">Цвет</span>
-                            <div id="eyesColor" class="color-container"></div>
+    <!-- pop-up-blocks -->
+    <div class="md-modal md-effect-1 js-modal-1" id="modal-1">
+        <div class="md-content">
+            <div class="md-content">
+                <h1>Выбросить предмет</h1>
+                <div class="content">
+                    <p>Вы хотите выбросить <span class="red js-modal-item-name"></span> (х<span class="value js-value"></span>)</p>
+                    <span class="quantity">Выберите количество:</span>
+                    <div class="range-block">
+                        <div>
+                            <input id="myRange" type="range" min="0" max="2" value="1" class="slider" >
+                            <p id="input-value"></p>
                         </div>
+                        <button class="max js-button-max">max</button>
                     </div>
-
-                    <p class="type-title gradient-color">скулы</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота</p>
-                        <label id="cheekbonesHeight"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ширина</p>
-                        <label id="cheekbonesWidth"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">щеки</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Глубина</p>
-                        <label id="cheeksDepth"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">Нос</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ширина</p>
-                        <label id="noseWidth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота</p>
-                        <label id="noseHeight"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Кончик носа</p>
-                        <label id="noseTip"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Длинна кончика носа</p>
-                        <label id="noseTipWidth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота кончика носа</p>
-                        <label id="noseTipHeight"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Перелом носа</p>
-                        <label id="noseBreak"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">челюсть</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ширина</p>
-                        <label id="jawWidth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота</p>
-                        <label id="jawHeight"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">подбородок</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ширина</p>
-                        <label id="chinWidth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Высота</p>
-                        <label id="chinHeight"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Глубина</p>
-                        <label id="chinDepth"></label>
-                    </div>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ямочка на подбородке</p>
-                        <label id="chinDimple"></label>
-                    </div>
-
-                    <p class="type-title gradient-color">Шея</p>
-                    <div class="range-slide ">
-                        <p class="slide-title">Ширина</p>
-                        <label id="neckWidth"></label>
+                    <div class="bottoms">
+                        <button class="bottom drop">Выбросить</button>
+                        <button class="bottom md-close">Отмена</button>
                     </div>
                 </div>
-
-                <div data-index="2" class="tab-container js_tab_container active">
-                    <p class="type-title">Пигментация кожи</p>
-                    <div class="range-slide">
-                        <label id="skinPigmentation"></label>
-                        <div class="sub">
-                            <div class="eyes-color color-block">
-                                <span class="text">Цвет</span>
-                                <div id="skinColor" class="color-container"></div>
-                            </div>
-                            <div class="skin-saturation">
-                                <span class="text">Насыщенность</span>
-                                <label id="skinSaturation"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="type-title">Старение</p>
-                    <div class="range-slide ">
-                        <label id="aging"></label>
-                    </div>
-
-                    <p class="type-title">Ожоги</p>
-                    <div class="range-slide ">
-                        <label id="burns"></label>
-                    </div>
-
-                    <p class="type-title">Угревая сыпь</p>
-                    <div class="range-slide ">
-                        <label id="acne"></label>
-                    </div>
-
-                    <p class="type-title">Веснушки</p>
-                    <div class="range-slide ">
-                        <label id="freckles"></label>
-                    </div>
-                </div>
-
-                <div data-index="3" class="tab-container js_tab_container">
-                    <div class="select-block">
-                        <p class="type-title gradient-color">Прическа</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="hairstyle" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="sub">
-                        <div class="hair-color color-block">
-                            <span class="text">Основной цвет</span>
-                            <div id="hairColor" class="color-container"></div>
-                        </div>
-                        <div class="hair-color color-block">
-                            <span class="text">Дополнительный цвет</span>
-                            <div id="hairAdditionalColor" class="color-container"></div>
-                        </div>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">брови</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="eyebrowsStyle" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">Волосы на лице</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="faceHair" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">Волосы на теле</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="bodyHair" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                </div>
-                <div data-index="4" class="tab-container js_tab_container">
-                    <div class="select-block">
-                        <p class="type-title gradient-color">верхняя одежда</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="outerwear" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">футболки</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="tShirts" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">штаны</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="pants" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <div class="select-block">
-                        <p class="type-title gradient-color">обувь</p>
-                        <a class="btn-left"><span class="arrow"></span></a>
-                        <p id="shoes" class="text"></p>
-                        <a class="btn-right"><span class="arrow"></span></a>
-                    </div>
-                    <a class="start js_create_char">
-                        Сохранить и начать игру
-                    </a>
-                </div>
-            </div>
-            <div class="tabs">
-                <div data-index="0" class="tab js_tab active"><span class="gradient-color">Родители</span></div>
-                <div data-index="1" class="tab js_tab"><span class="gradient-color">Черты<br /> лица</span></div>
-                <div data-index="2" class="tab js_tab"><span class="gradient-color">Дефекты<br /> кожи</span></div>
-                <div data-index="3" class="tab js_tab"><span class="gradient-color">Волосы</span></div>
-                <div data-index="4" class="tab js_tab"><span class="gradient-color">одежда</span></div>
             </div>
         </div>
     </div>
+    <div class="md-modal md-effect-1 js-modal-2" id="modal-2" data-slot-id="" data-drop-slot-id="" >
+        <div class="md-content">
+            <div class="md-content">
+                <h1>Разделить предмет</h1>
+                <div class="content">
+                    <div class="input-group">
+                        <span>Выберите количество (1-2):</span>
+                        <label for="input-divide"><input type="text" max="2" value="1" id="input-divide" ></label>
+                    </div>
+                    <div class="buttons-group">
+                        <button class="js-modal-2-min">min</button>
+                        <button class="js-modal-2-half">50%</button>
+                        <button class="js-modal-2-max">max</button>
+                    </div>
+                    <div class="bottoms">
+                        <button class="bottom drop js-split">Разделить</button>
+                        <button class="bottom md-close">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="md-overlay"></div>
+    <!-- pop-up-blocks : END -->
+
 
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="js/rangeslider.min.js"></script>
+
+    <!-- md-modal -->
+    <script src="js/classie.js"></script>
+    <script src="js/modalEffects.js"></script>
+    <!-- md-modal -->
+
+    <script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-</body>
+    </body>
 </html>
